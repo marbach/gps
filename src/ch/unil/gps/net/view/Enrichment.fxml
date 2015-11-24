@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<TitledPane animated="false" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="519.0" stylesheets="@../../view/GpsStyle.css" text="Connectivity enrichment" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.unil.gps.net.view.EnrichmentController">
+   <content>
+      <VBox spacing="3.0">
+         <children>
+            <Label text="Input" />
+            <GridPane hgap="10.0" VBox.vgrow="NEVER">
+              <columnConstraints>
+                <ColumnConstraints hgrow="NEVER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="120.0" />
+                <ColumnConstraints hgrow="NEVER" />
+              </columnConstraints>
+              <rowConstraints>
+                  <RowConstraints vgrow="SOMETIMES" />
+                  <RowConstraints vgrow="SOMETIMES" />
+                <RowConstraints vgrow="NEVER" />
+                  <RowConstraints vgrow="SOMETIMES" />
+                  <RowConstraints vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Label text="GWAS gene scores:" GridPane.rowIndex="3" />
+                  <HBox spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                     <children>
+                        <TextField fx:id="geneScoreTextField" editable="false" prefHeight="26.0" prefWidth="200.0" promptText="Example: advanced macular degeneration, neovascular" />
+                        <Button fx:id="geneScoreBrowseButton" mnemonicParsing="false" onAction="#handleGeneScoreBrowseButton" text="Browse ..." />
+                        <Hyperlink fx:id="geneScoreExampleLink" onAction="#handleExampleGeneScoresLink" text="Example" />
+                     </children>
+                  </HBox>
+                  <Label text="Networks:" />
+                  <HBox alignment="CENTER_LEFT" spacing="5.0" GridPane.columnIndex="1">
+                     <children>
+                        <TextField fx:id="networksTextField" editable="false" prefHeight="26.0" prefWidth="200.0" promptText="No networks selected" />
+                        <Label text="Select in table on the left " />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                     <children>
+                        <Label text="Compute from SNP p-values:" />
+                        <Hyperlink fx:id="pascalDownloadLink" onAction="#handlePascalDownloadLink" text="Get PASCAL" />
+                        <Hyperlink fx:id="geneScoreDownloadLink" onAction="#handleGeneScoreDownloadLink" text="Download">
+                           <HBox.margin>
+                              <Insets left="22.0" />
+                           </HBox.margin></Hyperlink>
+                     </children>
+                  </HBox>
+                  <CheckBox fx:id="usePrecomputedKernelsCheckBox" mnemonicParsing="false" selected="true" text="Use precomputed network kernels if available" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                     <GridPane.margin>
+                        <Insets bottom="8.0" top="5.0" />
+                     </GridPane.margin>
+                  </CheckBox>
+               </children>
+            </GridPane>
+            <Separator prefWidth="200.0" />
+            <Label text="Output" />
+            <GridPane hgap="10.0" VBox.vgrow="NEVER">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="NEVER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="120.0" />
+                  <ColumnConstraints hgrow="NEVER" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints vgrow="SOMETIMES" />
+                  <RowConstraints vgrow="SOMETIMES" />
+                  <RowConstraints vgrow="NEVER" />
+               </rowConstraints>
+               <children>
+                  <Label text="Output directory:" />
+                  <HBox spacing="5.0" GridPane.columnIndex="1">
+                     <children>
+                        <TextField fx:id="outputDirTextField" editable="false" prefHeight="26.0" prefWidth="200.0" promptText="Choose directory" />
+                        <Button fx:id="outputDirBrowseButton" mnemonicParsing="false" onAction="#handleOutputDirBrowseButton" text="Browse ..." />
+                     </children>
+                  </HBox>
+                  <CheckBox fx:id="exportKernelsCheckBox" mnemonicParsing="false" text="Export network kernels" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                     <GridPane.margin>
+                        <Insets bottom="4.0" top="5.0" />
+                     </GridPane.margin>
+                  </CheckBox>
+               </children>
+            </GridPane>
+            <Separator prefWidth="200.0" />
+            <Label text="Parameters" />
+            <GridPane hgap="5.0" vgap="5.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="NEVER" />
+                <ColumnConstraints hgrow="NEVER" />
+                  <ColumnConstraints hgrow="ALWAYS" />
+                  <ColumnConstraints hgrow="NEVER" />
+                  <ColumnConstraints hgrow="NEVER" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints vgrow="SOMETIMES" />
+                <RowConstraints vgrow="SOMETIMES" />
+                  <RowConstraints vgrow="SOMETIMES" />
+                  <RowConstraints vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <TextField fx:id="numPermutationsTextField" alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="26.0" prefWidth="65.0" text="10000" />
+                  <Label fx:id="numPermutationsLabel" text="Number of permutations" GridPane.columnIndex="1" />
+                  <CheckBox fx:id="excludeHlaGenesCheckBox" mnemonicParsing="false" selected="true" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
+                  <Label fx:id="excludeHlaGenesLabel" text="Exclude HLA genes" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Button fx:id="runButton" defaultButton="true" mnemonicParsing="false" onAction="#handleRunButton" prefWidth="70.0" text="Run" GridPane.columnIndex="4" GridPane.rowIndex="3" />
+                  <Button fx:id="exportSettingsButton" mnemonicParsing="false" onAction="#handleExportSettingsButton" text="Export settings" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                  <CheckBox fx:id="excludeXYChromosomesCheckBox" mnemonicParsing="false" selected="true" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
+                  <Label fx:id="excludeXYChromosomesLabel" text="Exclude X, Y chromosomes" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <ChoiceBox fx:id="numCoresChoiceBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="26.0" prefWidth="50.0" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
+                  <Label fx:id="numCoresLabel" text="Number of cores (parallel jobs)" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+               </children>
+               <VBox.margin>
+                  <Insets top="5.0" />
+               </VBox.margin>
+               <padding>
+                  <Insets bottom="3.0" />
+               </padding>
+            </GridPane>
+            <Separator prefWidth="200.0" />
+            <Label text="Results" />
+            <GridPane hgap="5.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="NEVER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="125.0" />
+                <ColumnConstraints hgrow="NEVER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="200.0" />
+                  <ColumnConstraints hgrow="NEVER" />
+                  <ColumnConstraints hgrow="NEVER" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints vgrow="NEVER" />
+                  <RowConstraints vgrow="NEVER" />
+                  <RowConstraints vgrow="NEVER" />
+              </rowConstraints>
+               <children>
+                  <Label text="Enrichment scores:" />
+                  <TextField fx:id="pvalFileTextField" editable="false" prefHeight="26.0" prefWidth="200.0" promptText="Choose file (*.pvals.txt)" GridPane.columnIndex="1" />
+                  <Button fx:id="plotButton" defaultButton="true" mnemonicParsing="false" onAction="#handlePlotButton" prefWidth="70.0" text="Plot" GridPane.columnIndex="3" />
+                  <HBox alignment="CENTER_LEFT" GridPane.columnSpan="2147483647" GridPane.rowIndex="2">
+                     <children>
+                        <Label text="Other plots:" />
+                        <Hyperlink fx:id="downloadRScriptsLink" onAction="#handleDownloadRScriptsLink" text="Download R-scripts" />
+                     </children>
+                  </HBox>
+                  <CheckBox fx:id="bonferroniCheckBox" mnemonicParsing="false" selected="true" text="Bonferroni correction" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Button fx:id="pvalFileBrowseButton" mnemonicParsing="false" onAction="#handlePvalFileBrowseButton" text="Browse ..." GridPane.columnIndex="2" />
+                  <Hyperlink fx:id="exampleFileLink" onAction="#handleExamplePvalsLink" text="Example" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+               </children>
+            </GridPane>
+         </children>
+      </VBox>
+   </content>
+</TitledPane>

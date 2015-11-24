@@ -1,0 +1,14 @@
+.project
+.classpath
+.settings
+.magnum-app.log.txt
+
+build/*
+!build/build-dmg.xml
+
+resources/
+
+bin/
+lib/
+/ClassTemplate.java
+/build.fxbuild
