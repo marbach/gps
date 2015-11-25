@@ -70,9 +70,8 @@ import javafx.util.converter.NumberStringConverter;
 public class EnrichmentController extends ViewController {
 
 	/** Reference to the selected networks */
-	final private LinkedHashSet<TreeItem<NetworkModel>> selectedNetworks = 
-			App.app.getOtherNetworksController().getSelectedNetworks();
-	
+	private LinkedHashSet<TreeItem<NetworkModel>> selectedNetworks; 
+
 	/** Bound to geneScoreTextField */
 	private ObjectProperty<File> geneScoreFileProperty = new SimpleObjectProperty<>();
 	/** Bound to outputDirTextField */
@@ -163,9 +162,11 @@ public class EnrichmentController extends ViewController {
 	// PUBLIC METHODS
     
     /** Initialize, called after the fxml file has been loaded */
-    @Override
-    protected void init() {
+    protected void initialize(NetworkAnalysisController networkAnalysisController) {
 
+    	selectedNetworks = 
+    			networkAnalysisController.getOtherNetworksController().getSelectedNetworks();
+    	
     	// Number of permutations
     	numPermutationsTextField.textProperty().addListener(new ChangeListener<String>() {
     	    @Override 
@@ -350,7 +351,9 @@ public class EnrichmentController extends ViewController {
     		fileChooser.setInitialDirectory(geneScoreFileProperty.get().getParentFile());
 
     	// Open dialog and set file
+    	App.app.disableMainWindow(true);
     	File file = fileChooser.showOpenDialog(app.getPrimaryStage());
+    	App.app.disableMainWindow(false);
     	geneScoreFileProperty.set(file);
     }
 
@@ -385,8 +388,11 @@ public class EnrichmentController extends ViewController {
     	// Directory chooser
     	DirectoryChooser dirChooser = new DirectoryChooser();
     	dirChooser.setTitle("Choose output directory");
-    	// Set directory
+    	
+    	App.app.disableMainWindow(true);
     	File dir = dirChooser.showDialog(app.getPrimaryStage());
+    	App.app.disableMainWindow(false);
+    	
     	outputDirProperty.set(dir);
     }
 
@@ -487,7 +493,10 @@ public class EnrichmentController extends ViewController {
     		fileChooser.setInitialDirectory(outputDirProperty.get());
 
     	// Open dialog and set file
+    	App.app.disableMainWindow(true);
     	File file = fileChooser.showOpenDialog(app.getPrimaryStage());
+    	App.app.disableMainWindow(false);
+
     	pvalFileProperty.set(file);
     	
     	// Enable plot button

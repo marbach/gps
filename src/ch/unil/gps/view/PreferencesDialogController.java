@@ -105,7 +105,9 @@ public class PreferencesDialogController extends ViewController {
     public void show() {
 
     	// Note, we update the settings independently of how the window was closed
+		App.app.disableMainWindow(true);
     	dialog.showAndWait(); // Controls remember their status after closing the dialog...
+		App.app.disableMainWindow(false);
     }
 
     

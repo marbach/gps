@@ -1,6 +1,57 @@
+/* ------------------------------------------------ */
+/* Root layout */
+
 .background-pane {
     -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, rgb(150,150,150) 0%, rgb(80,80,80) 100%);
 }
+
+.analysis-button-inactive {
+	-fx-font-weight: bold;
+	-fx-text-fill: #3399CC;
+	-fx-background-color: rgba(10,10,10,0.8);
+}
+.analysis-button-active {
+	-fx-font-weight: bold;
+	-fx-text-fill: white;
+	-fx-background-color: rgba(50,50,50,0.85);
+}
+
+.lion-default {
+    -fx-background-color: 
+        rgba(0,0,0,0.08),
+        linear-gradient(#5a61af, #51536d),
+        linear-gradient(#e4fbff 0%,#cee6fb 10%, #a5d3fb 50%, #88c6fb 51%, #d5faff 100%);
+    -fx-background-insets: 0 0 -1 0,0,1;
+    -fx-text-fill: #242d35;
+}
+.lion {
+    -fx-background-color: 
+        rgba(0,0,0,0.08),
+        linear-gradient(#9a9a9a, #909090),
+        linear-gradient(white 0%, #f3f3f3 50%, #ececec 51%, #f2f2f2 100%);
+    -fx-background-insets: 0 0 -1 0,0,1;
+    -fx-text-fill: #242d35;
+}
+
+/* ------------------------------------------------ */
+/* Console and credits */
+
+.console-text {
+	-fx-font-family: monospace;
+	-fx-font-size: 12.5;
+}
+.credits-text {
+	-fx-font-size: 11;
+	-fx-text-fill: rgb(229,229,229);
+}
+.credits-link {
+	-fx-font-size: 11;
+	-fx-text-fill: #52bbe7;
+}
+
+
+/* ------------------------------------------------ */
+/* Jobs */
 
 .status-ongoing-label {
 	-fx-text-fill: royalblue;
@@ -19,18 +70,9 @@
 	-fx-font-weight: bold;
 }
 
-.console-text {
-	-fx-font-family: monospace;
-	-fx-font-size: 12.5;
-}
-.credits-text {
-	-fx-font-size: 11;
-	-fx-text-fill: rgb(229,229,229);
-}
-.credits-link {
-	-fx-font-size: 11;
-	-fx-text-fill: #52bbe7;
-}
+
+/* ------------------------------------------------ */
+/* General */
 
 .bold-text {
 	-fx-font-weight: bold;
@@ -40,7 +82,6 @@
     -fx-text-fill: -fx-focus-color;
     -fx-underline: false;
 }
-
 .hyperlink:hover {
     -fx-underline: true;
 }

@@ -1,7 +1,7 @@
 .project
 .classpath
 .settings
-.magnum-app.log.txt
+.gps_log.txt
 
 build/*
 !build/build-dmg.xml

@@ -25,9 +25,17 @@ THE SOFTWARE.
  */
 package ch.unil.gps.view;
 
+import ch.unil.gps.App;
+import ch.unil.gps.net.view.NetworkAnalysisController;
+import ch.unil.gps.pathway.view.PathwayAnalysisController;
+import edu.mit.magnum.MagnumSettings;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.TitledPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
 /**
@@ -35,7 +43,24 @@ import javafx.scene.layout.VBox;
  */
 public class RootLayoutController extends ViewController {
     
+	/** Master controller for genes and pathways view */
+	private PathwayAnalysisController pathwayAnalysisController;
+	/** Master controller for networks view */
+	private NetworkAnalysisController networkAnalysisController;
+    /** "Console" controller */
+    public ConsoleController consoleController;
+    /** "Credits" controller */
+    private CreditsController creditsController;
+
+	/** The root */
+	@FXML
+	private BorderPane rootBorderPane;
+	
     /** The "menu" buttons */
+	@FXML
+    private Button genesPathwaysButton;
+	@FXML
+    private Button networksButton;
     @FXML
     private Button helpButton;
     @FXML
@@ -43,16 +68,126 @@ public class RootLayoutController extends ViewController {
     @FXML
     private Button aboutButton;
 
-    /** The two sides of the root layout */
-    @FXML
-    private VBox leftSide;
-    @FXML
-    private VBox rightSide;
+    /** The console pane (within the analysis views) */
+    private TitledPane consolePane;
+    /** The credits pane (within the analysis views) */
+    private HBox creditsHBox;
+    
+    
+	// ============================================================================
+	// METHODS
 
+    /** Initialize (does not work if called initialize() or init(), for the former I don't know why, mystery) */
+    public void show() {
+
+    	// Initialize console and credits
+    	initConsolePane();
+    	initCreditsHBox();
+    	
+    	pathwayAnalysisController = new PathwayAnalysisController(this);
+    	networkAnalysisController = new NetworkAnalysisController(this);
+    	
+    	// First show the genes & pathways view
+    	rootBorderPane.setCenter(pathwayAnalysisController.getRoot());
+    }
+    
+    
+	// ----------------------------------------------------------------------------
+
+    /** Load preferences */
+    @Override
+    public void loadPreferences() {
+    	networkAnalysisController.loadPreferences();
+    }
+
+    
+	// ----------------------------------------------------------------------------
+
+    /** Save preferences */
+    @Override
+    public void savePreferences() {
+    	networkAnalysisController.savePreferences();
+    }
+
+    	
+	// ----------------------------------------------------------------------------
 	
+    /** Apply settings from the given magnum settings instance */
+    public void applySettings(MagnumSettings set) {
+    	networkAnalysisController.applySettings(set);
+    }
+
+
+	// ----------------------------------------------------------------------------
+
+    /** "Console" pane */
+    private void initConsolePane() {
+
+    	consoleController = (ConsoleController) ViewController.loadFxml("view/Console.fxml");
+    	// Add to root layout
+    	consolePane = (TitledPane) consoleController.getRoot();
+    	consolePane.setExpanded(true);
+    	VBox.setVgrow(consolePane, Priority.ALWAYS);
+
+    	// Link to logger
+    	App.log.setConsole(consoleController.getConsoleTextArea());
+    	// Copy previous output to console
+    	consoleController.getConsoleTextArea().setText(App.log.getLogCopy());
+    	App.log.disableLogCopy();
+    }
+    
+    
+	// ----------------------------------------------------------------------------
+
+    /** "Credits" pane */
+    private void initCreditsHBox() {
+
+    	creditsController = (CreditsController) ViewController.loadFxml("view/Credits.fxml");
+    	// Add to root layout
+    	creditsHBox = (HBox) creditsController.getRoot();
+    	VBox.setVgrow(creditsHBox, Priority.NEVER);
+    }
+
+    
+	// ----------------------------------------------------------------------------
+
+    /** Set styles for active and inactive buttons */
+    private void activeInactiveMenuButton(Button active, Button inactive) {
+    	
+    	ObservableList<String> styleActive = active.getStyleClass();
+    	ObservableList<String> styleInactive = inactive.getStyleClass();
+    	
+    	styleActive.remove("lion");
+    	styleActive.add("lion-default");
+    	
+    	styleInactive.remove("lion-default");
+    	styleInactive.add("lion");
+    }
+    
+
 	// ============================================================================
 	// HANDLES
     
+    /** Networks button handle */
+    @FXML
+    private void handleNetworksButton() {
+    	rootBorderPane.setCenter(networkAnalysisController.getRoot());
+    	activeInactiveMenuButton(networksButton, genesPathwaysButton);
+    }
+	    
+
+    // ----------------------------------------------------------------------------
+
+    /** Pathways button handle */
+    @FXML
+    private void handlePathwaysButton() {
+    	rootBorderPane.setCenter(pathwayAnalysisController.getRoot());
+    	activeInactiveMenuButton(genesPathwaysButton, networksButton);
+   }
+
+    
+	// ----------------------------------------------------------------------------
+
     /** Help button handle */
     @FXML
     private void handleHelpButton() {
@@ -84,13 +219,14 @@ public class RootLayoutController extends ViewController {
 
     public BorderPane getRoot() { return (BorderPane) root; }
     
-	public VBox getLeftSide() {
-		return leftSide;
+    public NetworkAnalysisController getNetworkAnalysisController() { return networkAnalysisController; }
+
+	public TitledPane getConsolePane() {
+		return consolePane;
 	}
 
-	public VBox getRightSide() {
-		return rightSide;
+	public HBox getCreditsHBox() {
+		return creditsHBox;
 	}
-
 	  
 }

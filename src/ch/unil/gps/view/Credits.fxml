@@ -34,12 +34,12 @@
          </children></VBox>
       <ImageView fitHeight="54.0" fitWidth="154.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../resources/icons/unil_logo_white_font.png" />
+            <Image url="@../resources/unil_logo_white_font.png" />
          </image>
       </ImageView>
       <ImageView fitHeight="69.0" fitWidth="111.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../resources/icons/sib_logo_white_font.png" />
+            <Image url="@../resources/sib_logo_white_font.png" />
          </image></ImageView>
    </children>
 </HBox>

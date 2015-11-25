@@ -147,7 +147,8 @@ public class JobController extends ViewController {
 		// Copy stdout to the console
 		App.log.setConsole(console);
 		App.log.println(headerText);
-		App.log.println("- Output directory: " + App.app.getEnrichmentController().getOutputDir().getPath() + "\n");
+		// TODO arrgh
+		App.log.println("- Output directory: " + App.app.getRootLayoutController().getNetworkAnalysisController().getEnrichmentController().getOutputDir().getPath() + "\n");
 		if (this.numCores > 1)
 			App.log.println("==> NOTE: Using multiple cores, console output of individual jobs turned OFF!\n"
 					      + "==> See the log files in the output directory instead: <job_name>.log.txt\n");

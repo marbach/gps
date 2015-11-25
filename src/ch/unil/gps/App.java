@@ -28,20 +28,14 @@ package ch.unil.gps;
 import java.io.File;
 import java.util.prefs.BackingStoreException;
 
-import ch.unil.gps.net.model.*;
-import ch.unil.gps.net.view.EnrichmentController;
-import ch.unil.gps.net.view.NetworkCollectionController;
 import ch.unil.gps.view.*;
 import edu.mit.magnum.Magnum;
 import edu.mit.magnum.MagnumSettings;
 import javafx.application.Application;
-import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.TitledPane;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 
@@ -51,7 +45,7 @@ import javafx.stage.Stage;
  */
 public class App extends Application {
 
-	/** For convenicen, a magnum reference -- do not use in threads, they need their own one! */
+	/** For convenience, a magnum reference -- do not use in threads, they need their own one! */
 	public static Magnum mag; 
 	/** Reference to unique instance of app (singleton design pattern) */
 	public static App app;
@@ -60,25 +54,12 @@ public class App extends Application {
 	
 	/** The main stage */
     private Stage primaryStage;
-    /** The root layout */
-    private BorderPane rootLayout;
-    
-    /** The collection of networks */
-    private NetworkCollection networkCollection = null;
     
     /** Root layout controller */
     private RootLayoutController rootLayoutController;
     /** "Settings" controller */
     private PreferencesDialogController preferencesController;
-    /** "Other networks" controller */
-    private NetworkCollectionController networksController;
-    /** "Connectivity enrichment" controller */
-    private EnrichmentController enrichmentController;
-    /** "Console" controller */
-    private ConsoleController consoleController;
-    /** "Credits" controller */
-    private CreditsController creditsController;
-    
+        
 
 	// ============================================================================
 	// STATIC METHODS
@@ -90,7 +71,7 @@ public class App extends Application {
 			// The logger
 			log = new AppLogger();
 			log.keepLogCopy();
-			File logFile = new File(System.getProperty("user.home"), ".magnum-app.log.txt");
+			File logFile = new File(System.getProperty("user.home"), ".gps_log.txt");
 			log.createLogFile(logFile);
 			// Say hello
 			log.println(AppSettings.gpsVersion);
@@ -143,14 +124,9 @@ public class App extends Application {
         
         // Load preferences controller -- needs to be done first because of rememberSettings
     	preferencesController = (PreferencesDialogController) ViewController.loadFxml("view/PreferencesDialog.fxml");
-        // The root layout
+    	
+    	// The root layout, rootLayoutControllers also initializes also the analysis controllers
         initRootLayout();
-        // Panes on the left side
-        showNetworkCollection();
-        // Panes on the right side
-        showConnetivityEnrichmentPane();
-        showConsolePane();
-        showCreditsPane();
         
         // Load saved/default settings
         loadPreferences();
@@ -164,8 +140,8 @@ public class App extends Application {
     	
     	try {
     		preferencesController.loadPreferences();
-    		networksController.loadPreferences();
-    		enrichmentController.loadPreferences();
+    		rootLayoutController.loadPreferences();
+    		
     	} catch (Exception e) {
     		// Corrupted preferences, clear them
     		try {
@@ -185,10 +161,8 @@ public class App extends Application {
 	
     /** Initialize the controls with saved/default settings */
     public void savePreferences() {
-    	
     	preferencesController.savePreferences();
-    	networksController.savePreferences();
-    	enrichmentController.savePreferences();
+    	rootLayoutController.savePreferences();
     }
     
     
@@ -196,9 +170,34 @@ public class App extends Application {
 	
     /** Apply settings from the given magnum settings instance */
     public void applySettings(MagnumSettings set) {
-    	
-    	enrichmentController.applySettings(set);
+    	rootLayoutController.applySettings(set);
     }
+
+    
+	// ----------------------------------------------------------------------------
+	
+    /** Disable the main window / stage */
+    public void disableMainWindow(boolean value) {
+    	rootLayoutController.getRoot().setDisable(value);
+    }
+    
+    
+	// ----------------------------------------------------------------------------
+	
+    /** Show an error dialog */
+    public void showErrorDialog(String header, String content, int width) {
+    	
+		Alert alert = new Alert(AlertType.ERROR);
+		alert.getDialogPane().setPrefWidth(width);
+		alert.setTitle("Error");
+		alert.setHeaderText(header);
+		alert.setContentText(content);
+		
+		disableMainWindow(true);
+		alert.showAndWait();
+		disableMainWindow(false);
+    }
+
 
 
 	// ============================================================================
@@ -208,88 +207,26 @@ public class App extends Application {
     private void initRootLayout() {
     	
     	rootLayoutController = (RootLayoutController) ViewController.loadFxml("view/RootLayout.fxml");
-    	rootLayout = (BorderPane) rootLayoutController.getRoot();
+    	rootLayoutController.show();
         
     	// Show the scene containing the root layout.
-    	Scene scene = new Scene(rootLayout);
+    	Scene scene = new Scene(rootLayoutController.getRoot());
     	primaryStage.setScene(scene);
     	primaryStage.show();
     }
 
     
-	// ----------------------------------------------------------------------------
-
-    /** "My networks" pane */
-    private void showNetworkCollection() {
-
-    	// Initialize network collection, needs to be done before loading controller
-		networkCollection = new NetworkCollection();
-    	// Initialize user networks pane
-    	networksController = (NetworkCollectionController) ViewController.loadFxml("net/view/NetworkCollection.fxml");
-    	
-    	// Add to root layout
-    	Node child = networksController.getRoot();
-    	VBox.setVgrow(child, Priority.ALWAYS);
-    	rootLayoutController.getLeftSide().getChildren().add(child);  
-    }
 
     
-	// ----------------------------------------------------------------------------
-
-    /** "Connectivity enrichment" pane */
-    private void showConnetivityEnrichmentPane() {
-
-    	// Initialize user networks pane
-    	enrichmentController = (EnrichmentController) ViewController.loadFxml("net/view/Enrichment.fxml");
-    	// Add to root layout
-    	rootLayoutController.getRightSide().getChildren().add(enrichmentController.getRoot());  
-    }
-
-    
-	// ----------------------------------------------------------------------------
-
-    /** "Console" pane */
-    private void showConsolePane() {
-
-    	consoleController = (ConsoleController) ViewController.loadFxml("view/Console.fxml");
-    	// Add to root layout
-    	TitledPane pane = (TitledPane) consoleController.getRoot();
-    	pane.setExpanded(true);
-    	rootLayoutController.getRightSide().getChildren().add(pane);
-    	VBox.setVgrow(pane, Priority.ALWAYS);
-
-    	// Link to logger
-    	log.setConsole(consoleController.getConsoleTextArea());
-    	// Copy previous output to console
-    	consoleController.getConsoleTextArea().setText(log.getLogCopy());
-    	log.disableLogCopy();
-    }
-    
-    
-	// ----------------------------------------------------------------------------
-
-    /** "Credits" pane */
-    private void showCreditsPane() {
-
-    	creditsController = (CreditsController) ViewController.loadFxml("view/Credits.fxml");
-    	// Add to root layout
-    	HBox credits = (HBox) creditsController.getRoot();
-    	rootLayoutController.getRightSide().getChildren().add(credits);
-    	VBox.setVgrow(credits, Priority.NEVER);
-    }
-
 
     
 	// ============================================================================
 	// SETTERS AND GETTERS
 
     public Stage getPrimaryStage() { return primaryStage; }
-    public BorderPane getRootLayout() { return rootLayout; }
+    public BorderPane getRootLayout() { return rootLayoutController.getRoot(); }
     
-    public NetworkCollection getNetworkCollection() { return networkCollection; }
-
     public PreferencesDialogController getPreferencesController() { return preferencesController; }
-	public EnrichmentController getEnrichmentController() {	return enrichmentController; }
-	public NetworkCollectionController getOtherNetworksController() { return networksController; }
+    public RootLayoutController getRootLayoutController() { return rootLayoutController; }
     
 }

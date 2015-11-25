@@ -40,7 +40,7 @@ final public class AppSettings {
 	// GENERAL
 
 	/** Gps version */
-	final static public String gpsVersion = "Magnum v1.0";
+	final static public String gpsVersion = "GWAS Pathways Suite v1.0";
 	
 	/** Website */
 	final static public String regulatoryCircuitsLink = "http://regulatorycircuits.org";

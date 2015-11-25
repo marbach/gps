@@ -40,7 +40,7 @@ public class SimpleInfoController extends ViewController {
 	public static void show(String fxmlPath, String title, String header) {
 		
     	// Disable the main window
-    	App.app.getRootLayout().setDisable(true);
+		App.app.disableMainWindow(true);
 
     	// Load the content
     	SimpleInfoController controller = (SimpleInfoController) ViewController.loadFxml(fxmlPath);
@@ -56,7 +56,7 @@ public class SimpleInfoController extends ViewController {
     	// Show the dialog
     	alert.showAndWait();
 		// Enable the main window
-    	App.app.getRootLayout().setDisable(false);
+    	App.app.disableMainWindow(false);
 
 	}
 	

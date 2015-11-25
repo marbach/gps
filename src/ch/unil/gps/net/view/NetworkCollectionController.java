@@ -29,6 +29,7 @@ import java.io.File;
 import java.util.LinkedHashSet;
 import java.util.List;
 
+import ch.unil.gps.App;
 import ch.unil.gps.net.model.NetworkCollection;
 import ch.unil.gps.net.model.NetworkModel;
 import ch.unil.gps.view.FileStringConverter;
@@ -136,10 +137,13 @@ public class NetworkCollectionController extends ViewController {
 	// PUBLIC METHODS
 
     /** Initialize, called after the fxml file has been loaded */
-    @Override
-    protected void init() {
+    protected void initialize(NetworkAnalysisController networkAnalysisController) {
 
-    	networkCollection = app.getNetworkCollection();
+    	// TODO arrgh
+    	//app.getRootLayoutController();
+    	//app.getRootLayoutController().getNetworkAnalysisController();
+    	//networkCollection = app.getRootLayoutController().getNetworkAnalysisController().getNetworkCollection();
+    	networkCollection = networkAnalysisController.getNetworkCollection();
     	
     	// Initialize the network tree
     	TreeItem<NetworkModel> tree = networkCollection.getNetworkTree();
@@ -255,9 +259,13 @@ public class NetworkCollectionController extends ViewController {
 
     	// Directory chooser
     	DirectoryChooser dirChooser = new DirectoryChooser();
-    	dirChooser.setTitle("Locate network collection directory");
+    	dirChooser.setTitle("Locate network collection directory");    	
+    	
     	// Set directory
+    	App.app.disableMainWindow(true);
     	File dir = dirChooser.showDialog(app.getPrimaryStage());
+    	App.app.disableMainWindow(false);
+
     	networkDirProperty.setValue(dir);    	
     	networkCollection.initDirectory(dir);
     }
@@ -269,7 +277,7 @@ public class NetworkCollectionController extends ViewController {
     @FXML
     private void handleNetworkDirDownloadLink() {
 
-    	SimpleInfoController.show("view/DownloadNetworks.fxml", 
+    	SimpleInfoController.show("net/view/DownloadNetworks.fxml", 
     			"Download networks", 
     			"Installing the network compendium");
     }
@@ -284,7 +292,11 @@ public class NetworkCollectionController extends ViewController {
     	// Open file chooser
     	final FileChooser fileChooser = new FileChooser();
     	fileChooser.setTitle("Select network files");
+
+    	App.app.disableMainWindow(true);
     	filesToBeAdded = fileChooser.showOpenMultipleDialog(app.getPrimaryStage());
+    	App.app.disableMainWindow(false);
+
     	if (filesToBeAdded == null) {
     		fileTextField.setText(null);
     		return;
@@ -447,7 +459,8 @@ public class NetworkCollectionController extends ViewController {
     	});
     	
 		// Let the enrichment controller know
-		app.getEnrichmentController().networkSelectionUpdated();
+    	// TODO arrgh
+		app.getRootLayoutController().getNetworkAnalysisController().getEnrichmentController().networkSelectionUpdated();
     }
 
 

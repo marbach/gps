@@ -81,7 +81,6 @@ public class ViewController {
         ViewController controller = loader.getController();
         controller.setRoot(root);
         controller.init();
-        
         return controller;
     }
 
@@ -97,8 +96,13 @@ public class ViewController {
             try {
             	URI uri = new URI(url);
                 desktop.browse(uri);
+                
             } catch (Exception e) {
                 e.printStackTrace();
+                // Show error dialog
+                App.app.showErrorDialog("Sorry, your platform does not support automatic download", 
+                		"You have to manually enter the link into your web browser:\n\n" + url,
+                		600);
             }
         }
     }
