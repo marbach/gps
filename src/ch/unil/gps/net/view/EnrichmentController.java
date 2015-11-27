@@ -37,7 +37,7 @@ import ch.unil.gps.net.control.JobEnrichment;
 import ch.unil.gps.net.control.JobMagnum;
 import ch.unil.gps.net.model.NetworkModel;
 import ch.unil.gps.view.*;
-import edu.mit.magnum.FileExport;
+import ch.unil.gpsutils.FileExport;
 import edu.mit.magnum.MagnumSettings;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
@@ -59,8 +59,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.Alert.AlertType;
-import javafx.stage.DirectoryChooser;
-import javafx.stage.FileChooser;
 import javafx.util.converter.NumberStringConverter;
 
 
@@ -161,8 +159,8 @@ public class EnrichmentController extends ViewController {
 	// ============================================================================
 	// PUBLIC METHODS
     
-    /** Initialize, called after the fxml file has been loaded */
-    protected void initialize(NetworkAnalysisController networkAnalysisController) {
+    /** Initialize */
+    public void initialize(NetworkAnalysisController networkAnalysisController) {
 
     	selectedNetworks = 
     			networkAnalysisController.getOtherNetworksController().getSelectedNetworks();
@@ -341,20 +339,7 @@ public class EnrichmentController extends ViewController {
     /** Gene score browse button */
     @FXML
     private void handleGeneScoreBrowseButton() {
-        
-    	// File chooser
-    	FileChooser fileChooser = new FileChooser();
-    	fileChooser.setTitle("Select a gene score file");
-    	
-    	// Set initial directory to that of current file
-    	if (geneScoreFileProperty.get() != null && geneScoreFileProperty.get().exists())
-    		fileChooser.setInitialDirectory(geneScoreFileProperty.get().getParentFile());
-
-    	// Open dialog and set file
-    	App.app.disableMainWindow(true);
-    	File file = fileChooser.showOpenDialog(app.getPrimaryStage());
-    	App.app.disableMainWindow(false);
-    	geneScoreFileProperty.set(file);
+    	chooseFile(geneScoreFileProperty, "Select a gene score file");
     }
 
 
@@ -384,16 +369,7 @@ public class EnrichmentController extends ViewController {
     /** Output directory browse button */
     @FXML
     private void handleOutputDirBrowseButton() {
-    	
-    	// Directory chooser
-    	DirectoryChooser dirChooser = new DirectoryChooser();
-    	dirChooser.setTitle("Choose output directory");
-    	
-    	App.app.disableMainWindow(true);
-    	File dir = dirChooser.showDialog(app.getPrimaryStage());
-    	App.app.disableMainWindow(false);
-    	
-    	outputDirProperty.set(dir);
+    	chooseDir(outputDirProperty, "Choose output directory");
     }
 
     
@@ -484,21 +460,7 @@ public class EnrichmentController extends ViewController {
     @FXML
     private void handlePvalFileBrowseButton() {
 
-    	// File chooser
-    	FileChooser fileChooser = new FileChooser();
-    	fileChooser.setTitle("Select an enrichment p-value file");
-    	
-    	// Set initial directory to the output dir
-    	if (outputDirProperty.get() != null && outputDirProperty.get().exists())
-    		fileChooser.setInitialDirectory(outputDirProperty.get());
-
-    	// Open dialog and set file
-    	App.app.disableMainWindow(true);
-    	File file = fileChooser.showOpenDialog(app.getPrimaryStage());
-    	App.app.disableMainWindow(false);
-
-    	pvalFileProperty.set(file);
-    	
+    	chooseFile(pvalFileProperty, "Select an enrichment p-value file");
     	// Enable plot button
     	plotButton.setDisable(false);
     }

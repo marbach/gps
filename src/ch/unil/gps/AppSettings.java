@@ -70,6 +70,12 @@ final public class AppSettings {
 	final static public String mitLicenseLink = "https://github.com/marbach/magnum-app/wiki/License";
 
 	// ============================================================================
+	// GENES AND PATHWAYS
+	
+	/** Reference population (1KG-EUR) link */
+	final static public String refPopLink = "http://www2.unil.ch/cbg/gwas-pathways/pascal/1KG-EUR.zip";
+	
+	// ============================================================================
 	// NETWORK DOWNLOAD DIALOG
 	
 	/** Partial network compendium */

@@ -39,7 +39,7 @@ import javafx.scene.layout.VBox;
  */
 public class NetworkAnalysisController extends AnalysisController {
 
-	/** "Other networks" controller */
+	/** Network collection controller */
     private NetworkCollectionController networksController;
     /** "Connectivity enrichment" controller */
     private EnrichmentController enrichmentController;
@@ -57,8 +57,9 @@ public class NetworkAnalysisController extends AnalysisController {
     	super(rootLayoutController);
 	}
 
-
-	// ----------------------------------------------------------------------------
+    
+	// ============================================================================
+	// SETTINGS
 
     /** Load preferences */
     public void loadPreferences() {
@@ -66,39 +67,28 @@ public class NetworkAnalysisController extends AnalysisController {
 		enrichmentController.loadPreferences();
     }
 
-    
-	// ----------------------------------------------------------------------------
-
     /** Save preferences */
     public void savePreferences() {
     	networksController.savePreferences();
     	enrichmentController.savePreferences();
     }
 
-    
-	// ----------------------------------------------------------------------------
-	
     /** Apply settings from the given magnum settings instance */
     public void applySettings(MagnumSettings set) {
     	enrichmentController.applySettings(set);
     }
 
 
-
-    
-	// ----------------------------------------------------------------------------
+	// ============================================================================
+	// PRIVATE METHODS
 
     /** Network analysis pane */
 	@Override
     protected void initContent() {
     	
-    	// Add css style
-    	//root.getStyleClass().add("networks-tab-pane");
-
     	// Show panes
         showNetworkCollection();
         showConnetivityEnrichmentPane();
-        //rootLayoutController.consoleController.getConsoleTextArea().setText("Wickedy oiseau");
         
         // Console and credits
         rightSide.getChildren().add(rootLayoutController.getConsolePane());
@@ -137,10 +127,6 @@ public class NetworkAnalysisController extends AnalysisController {
     }
 
 
-	// ============================================================================
-	// PRIVATE METHODS
-
-	
 	// ============================================================================
 	// SETTERS AND GETTERS
 

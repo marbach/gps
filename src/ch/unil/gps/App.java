@@ -33,8 +33,6 @@ import edu.mit.magnum.Magnum;
 import edu.mit.magnum.MagnumSettings;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
@@ -181,24 +179,6 @@ public class App extends Application {
     	rootLayoutController.getRoot().setDisable(value);
     }
     
-    
-	// ----------------------------------------------------------------------------
-	
-    /** Show an error dialog */
-    public void showErrorDialog(String header, String content, int width) {
-    	
-		Alert alert = new Alert(AlertType.ERROR);
-		alert.getDialogPane().setPrefWidth(width);
-		alert.setTitle("Error");
-		alert.setHeaderText(header);
-		alert.setContentText(content);
-		
-		disableMainWindow(true);
-		alert.showAndWait();
-		disableMainWindow(false);
-    }
-
-
 
 	// ============================================================================
 	// PRIVATE METHODS

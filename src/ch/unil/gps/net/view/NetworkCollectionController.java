@@ -59,7 +59,6 @@ import javafx.scene.control.TreeTableView.TreeTableViewSelectionModel;
 import javafx.scene.control.cell.CheckBoxTreeTableCell;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 
 /**
@@ -256,18 +255,11 @@ public class NetworkCollectionController extends ViewController {
     /** Network directory browse button */
     @FXML
     private void handleNetworkDirBrowseButton() {
-
-    	// Directory chooser
-    	DirectoryChooser dirChooser = new DirectoryChooser();
-    	dirChooser.setTitle("Locate network collection directory");    	
     	
-    	// Set directory
-    	App.app.disableMainWindow(true);
-    	File dir = dirChooser.showDialog(app.getPrimaryStage());
-    	App.app.disableMainWindow(false);
-
-    	networkDirProperty.setValue(dir);    	
-    	networkCollection.initDirectory(dir);
+    	// Choose directory
+    	chooseDir(networkDirProperty, "Locate network collection directory");
+    	// Initialize network collection
+    	networkCollection.initDirectory(networkDirProperty.get());
     }
     	
 

@@ -32,8 +32,13 @@ import java.net.URI;
 import java.util.prefs.Preferences;
 
 import ch.unil.gps.*;
+import javafx.beans.property.ObjectProperty;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
 
 
 /**
@@ -100,13 +105,71 @@ public class ViewController {
             } catch (Exception e) {
                 e.printStackTrace();
                 // Show error dialog
-                App.app.showErrorDialog("Sorry, your platform does not support automatic download", 
+                showErrorDialog("Sorry, your platform does not support automatic download", 
                 		"You have to manually enter the link into your web browser:\n\n" + url,
                 		600);
             }
         }
     }
     
+
+    // ----------------------------------------------------------------------------
+
+    /** Show an error dialog */
+    public static void showErrorDialog(String header, String content, int width) {
+    	
+		Alert alert = new Alert(AlertType.ERROR);
+		alert.getDialogPane().setPrefWidth(width);
+		alert.setTitle("Error");
+		alert.setHeaderText(header);
+		alert.setContentText(content);
+		
+		App.app.disableMainWindow(true);
+		alert.showAndWait();
+		App.app.disableMainWindow(false);
+    }
+
+    
+    // ----------------------------------------------------------------------------
+
+    /** Open dialog and choose a file */
+    public static void chooseFile(ObjectProperty<File> fileProp, String title) {
+        
+    	// File chooser
+    	FileChooser fileChooser = new FileChooser();
+    	fileChooser.setTitle(title);
+    	
+    	// Set initial directory to that of current file
+    	if (fileProp.get() != null && fileProp.get().exists())
+    		fileChooser.setInitialDirectory(fileProp.get().getParentFile());
+
+    	// Open dialog
+    	App.app.disableMainWindow(true);
+    	File file = fileChooser.showOpenDialog(App.app.getPrimaryStage());
+    	App.app.disableMainWindow(false);
+    	
+    	// Set file
+    	fileProp.set(file);
+    }
+
+    
+    // ----------------------------------------------------------------------------
+
+    /** Open dialog and choose a directory */
+    public static void chooseDir(ObjectProperty<File> dirProp, String title) {
+        
+    	// Directory chooser
+    	DirectoryChooser dirChooser = new DirectoryChooser();
+    	dirChooser.setTitle(title);
+    	
+    	App.app.disableMainWindow(true);
+    	File dir = dirChooser.showDialog(App.app.getPrimaryStage());
+    	App.app.disableMainWindow(false);
+    	
+    	// Set directory
+    	dirProp.set(dir);
+    }
+
     
 	// ============================================================================
 	// PROTECTED

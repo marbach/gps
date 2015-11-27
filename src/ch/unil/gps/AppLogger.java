@@ -28,8 +28,8 @@ package ch.unil.gps;
 import java.io.File;
 
 import ch.unil.gps.view.JobController;
-import edu.mit.magnum.FileExport;
-import edu.mit.magnum.MagnumLogger;
+import ch.unil.gpsutils.FileExport;
+import ch.unil.gpsutils.Logger;
 import javafx.application.Platform;
 import javafx.scene.control.TextArea;
 
@@ -37,7 +37,7 @@ import javafx.scene.control.TextArea;
 /**
  * Logger supporting separate outputs for different threads
  */
-public class AppLogger extends MagnumLogger {
+public class AppLogger extends Logger {
 
 	/** Set this flag if the thread should check for interrupt */
 	private boolean checkInterrupt = false;

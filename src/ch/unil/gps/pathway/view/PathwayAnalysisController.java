@@ -27,15 +27,21 @@ package ch.unil.gps.pathway.view;
 
 import ch.unil.gps.view.AnalysisController;
 import ch.unil.gps.view.RootLayoutController;
+import ch.unil.gps.view.ViewController;
 import edu.mit.magnum.MagnumSettings;
+import javafx.scene.Node;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 
 /**
  * Controller of the main layout of the networks analysis pane (has no fxml file)
  */
 public class PathwayAnalysisController extends AnalysisController {
 
-
-	
+	/** GWAS controller */
+    private GwasController gwasController;
+    
+    
 	// ============================================================================
 	// PUBLIC METHODS
 	
@@ -46,41 +52,53 @@ public class PathwayAnalysisController extends AnalysisController {
 	}
 
 
-	// ----------------------------------------------------------------------------
+	// ============================================================================
+	// SETTINGS
 
     /** Load preferences */
     public void loadPreferences() {
     }
 
-    
-	// ----------------------------------------------------------------------------
-
     /** Save preferences */
     public void savePreferences() {
     }
 
-    
-	// ----------------------------------------------------------------------------
-	
     /** Apply settings from the given magnum settings instance */
     public void applySettings(MagnumSettings set) {
     }
 
 
-	// ----------------------------------------------------------------------------
+	// ============================================================================
+	// PRIVATE METHODS
 
     /** Network analysis pane */
 	@Override
     protected void initContent() {
     	
+    	// Show panes
+        showGwas();
+        
+        // Console and credits
+        rightSide.getChildren().add(rootLayoutController.getConsolePane());
+        rightSide.getChildren().add(rootLayoutController.getCreditsHBox());
     }
 
 	
+	// ----------------------------------------------------------------------------
 
+    /**  */
+    private void showGwas() {
 
-	// ============================================================================
-	// PRIVATE METHODS
+    	gwasController = (GwasController) ViewController.loadFxml("pathway/view/Gwas.fxml");
+    	gwasController.initialize();
+    	
+    	// Add to root layout
+    	Node child = gwasController.getRoot();
+    	VBox.setVgrow(child, Priority.ALWAYS);
+    	leftSide.getChildren().add(child);  
+    }
 
+	
 	
 	// ============================================================================
 	// SETTERS AND GETTERS

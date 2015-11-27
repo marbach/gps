@@ -34,7 +34,7 @@ import java.util.List;
 import java.util.Map.Entry;
 
 import ch.unil.gps.AppSettings;
-import edu.mit.magnum.FileParser;
+import ch.unil.gpsutils.FileParser;
 import javafx.scene.control.TreeItem;
 
 /**

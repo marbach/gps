@@ -33,7 +33,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import ch.unil.gps.App;
-import edu.mit.magnum.FileParser;
+import ch.unil.gpsutils.FileParser;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.chart.BarChart;

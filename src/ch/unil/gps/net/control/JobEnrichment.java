@@ -31,8 +31,8 @@ import ch.unil.gps.AppSettings;
 import ch.unil.gps.net.model.NetworkModel;
 import ch.unil.gps.net.view.EnrichmentController;
 import ch.unil.gps.view.JobController;
-import edu.mit.magnum.FileExport;
-import edu.mit.magnum.MagnumLogger;
+import ch.unil.gpsutils.FileExport;
+import ch.unil.gpsutils.Logger;
 
 /**
  * 
@@ -101,7 +101,7 @@ public class JobEnrichment extends JobMagnum {
 	// ----------------------------------------------------------------------------
 
     /** Write settings file for magnum */
-    public void writeSettingsFile(MagnumLogger log) {
+    public void writeSettingsFile(Logger log) {
     	
     	log.println("Writing settings file...");
     	

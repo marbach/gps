@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.layout.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<TitledPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="525.0" text="GWAS" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.unil.gps.pathway.view.GwasController">
+   <content>
+      <VBox spacing="3.0">
+         <children>
+            <GridPane>
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="140.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Label text="Summary statistics:" />
+                  <HBox spacing="5.0" GridPane.columnIndex="1">
+                     <children>
+                        <TextField fx:id="gwasTextField" editable="false" prefHeight="26.0" prefWidth="200.0" />
+                        <Button fx:id="gwasBrowseButton" mnemonicParsing="false" onAction="#handleGwasBrowseButton" text="Browse ..." />
+                        <Hyperlink onAction="#handleExampleGwasLink" text="Example" />
+                     </children>
+                  </HBox>
+               </children>
+            </GridPane>
+            <Separator prefWidth="200.0">
+               <VBox.margin>
+                  <Insets top="3.0" />
+               </VBox.margin>
+            </Separator>
+            <Label text="Reference population for LD estimation" />
+            <GridPane>
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="140.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints vgrow="SOMETIMES" />
+               </rowConstraints>
+               <children>
+                  <Label text="Directory:" />
+                  <HBox spacing="5.0" GridPane.columnIndex="1">
+                     <children>
+                        <TextField fx:id="refPopTextField" editable="false" prefHeight="26.0" prefWidth="200.0" promptText="Locate directory" />
+                        <Button fx:id="refPopBrowseButton" mnemonicParsing="false" onAction="#handleRefPopBrowseButton" text="Browse ..." />
+                        <Hyperlink onAction="#handleRefPopDownloadLink" text="Download" />
+                     </children>
+                  </HBox>
+               </children>
+            </GridPane>
+         </children>
+      </VBox>
+   </content>
+</TitledPane>
